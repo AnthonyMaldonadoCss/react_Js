@@ -54,12 +54,13 @@
         //this is a method
         const useState = React.useState
 
-        const Avatar = props => {
+        const Avatar = ({gender, id, size, name = 'no name'}) => {
             
             //Devuelve un valor con un estado y una funcion para actualizarlo
             const [enabled, setEnabled] = useState(true)
             
-            const src = `https://randomuser.me/api/portraits/${props.gender}/${props.id}.jpg`;
+
+            const src = `https://randomuser.me/api/portraits/${gender}/${id}.jpg`;
         
             //return h("img", {src});
 
@@ -69,33 +70,90 @@
 
             let pictureClassName = ''
 
-            if(props.size === 'small'){
+            if(size === 'small'){
                 pictureClassName = "is-small"
-            } else if (props.size === "large"){
+            } else if (size === "large"){
                 pictureClassName = "is-large"
             }
             
             return(
             <picture>
-                <img onClick={() => {
-                    setEnabled(!enabled)
-                }}  className={className, pictureClassName} src={src} />
-               <h3> {props.name} </h3>
+                {
+                    id ?(
+                        <img onClick={() => 
+                            {setEnabled(!enabled)}}  
+                            className={className} 
+                            src={src} 
+                        />
+                    ) : (
+                        <b> Sin imagen para mostrar </b>
+                    )
+                }
+                <h3>  {enabled ? name : "Deshabilitado"} </h3>
             </picture>
+            );
+        };
+
+
+        function Contador  () {
+            const [contadorValue, actualizarContador] = useState(12)
+
+            const [numeroDeVeces, actualizarVeces] = useState(0);
+            
+            /*const contadorState = useState(12)
+            let contadorValue = contadorStatate[0]
+            let actualizarContador = contadorState[1]*/
+
+
+           return (
+                <div>
+                
+                    <span>{contadorValue}</span>
+                    <button onClick={() => {
+                        actualizarContador(contadorValue + 1);
+                        actualizarVeces(numeroDeVeces + 1);
+                    }}
+                    >
+                        INCREMENTAR
+                    </button>
+
+                    <button onClick={() => {
+                        actualizarContador(contadorValue - 1);
+                        actualizarVeces(numeroDeVeces + 1);
+                    }}
+                    >
+                        DECREMENTAR
+                    </button>
+
+                    <p>Numero de veces {numeroDeVeces}</p>
+                </div>   
             )
+
+            
         }
 
         //ReactDOM.render(h(Avatar, {id: 1}), app);
 
         ReactDOM.render(
             <div>
+                <Avatar name={"Susana"} gender={'women'} size={'small'} />
+
                 <Avatar name={'estefania'} gender={'women'} id={1} size={'small'} />
                
-                <Avatar name={'jose'} gender={'men'} id={3} />
+                <Avatar  gender={'men'} id={3} />
 
                 <Avatar name={'maria'} gender={'women'} id={10} size={'large'} />
+
+                <hr></hr>
+
+                <h2>CONTADOR USE STATE</h2>
+
+                <Contador />
             </div>, 
             app
+            
+            
+        
         )
        
        
